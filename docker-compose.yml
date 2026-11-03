@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  web:
+    image: php:8.2.35-apache
+    container_name: entorno_php_seguro
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
