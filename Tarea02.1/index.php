@@ -2,6 +2,8 @@
     require_once "tarifas.php";
     /** @var array $tarifas */
     
+    require_once "procesar.php";
+    
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +14,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="">
+    <form action="" method="POST">
     <label>Nombre:
         <input type="text" name="nombre" required>
     </label>
@@ -34,6 +36,13 @@
 
     <button type="submit">Calcular importe</button>
 </form>
+
+    <?php
+        require_once "funciones.php";
+
+        if (isset($_POST[""])) {
+    
+    ?>
     
 </body>
 </html>

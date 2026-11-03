@@ -9,6 +9,7 @@
         $precioFinal = $precio * $sesiones;
 
         return $precioFinal;
+    
     }
 
     /**
@@ -17,15 +18,21 @@
      * @param int $sesiones
      * @return void
      */
+    
     function calcularDescuento(float $importe, int $sesiones): float{
         if ($sesiones >= 5){
-            $precioDescuento = calcularImporte() - 0.10;
-            
+            $precioDescuento =  calcularImporte($importe, $sesiones) * 0.10;
+            return $precioDescuento;
+        } else {
+            return 0.0;
         }
     }
-
+    
     function calcularTotal(float $importe, float $descuento): float{
-        
+        return $importe - $descuento;
+
     }
+    
+
 
 ?>
