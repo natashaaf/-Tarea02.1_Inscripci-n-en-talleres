@@ -1,14 +1,18 @@
+// ==============================================
+//  5.4. Inclusión de archivos 
+// ==============================================
+
 <?php
 require_once "tarifas.php";
 /**@var array $tarifas */
 
-require_once "funciones.php";
+require_once "funciones.php"; 
 
 
-/**
- * 5.1. Recuperación y validación de los datos
- * 5.2. Acumulación y visualización de errores
- */
+// ==============================================
+// 5.1. Recuperación y validación de los datos
+// 5.2. Acumulación y visualización de errores
+// ==============================================
 
 // comproba que la peticion es de tipo post
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -38,15 +42,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errores[] = "El taller seleccionado no existe";
     }
 
-    if (!empty($errores)) {
-    echo "<ul>";
+    // ===============================================
+    // 5.2. Acumulación y visualización de errores
+    // 5.3. Cálculo y presentación de los resultados
+    // ===============================================
     
-    foreach ($errores as $e) {
-        echo "<li>" . htmlspecialchars($e, ENT_QUOTES, "UTF-8") . "</li>";
+    // Visualización de errores con htmlspecialchars (forma segura)
+    if (!empty($errores)) {
+        echo "<h2>Se han encontrado errores:</h2>";
+        echo "<ul>";
+        foreach ($errores as $error) {
+            echo "<li>" . htmlspecialchars($error, ENT_QUOTES, "UTF-8") . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        // ==========================================
+        // 5.3. CÁLCULO Y PRESENTACIÓN DE RESULTADOS
+        // ==========================================
+
+        // 1. Obtén el precio por sesión a partir del array $tarifas
+        $precio = $tarifas[$taller];
+
+        // 2. Calcula el importe inicial, el descuento y el total mediante las funciones de funciones.php
+        $importe = calcularImporte($precio, $sesiones);
+        $descuento = calcularDescuento($importe, $sesiones);
+        $total = calcularTotal($importe, $descuento);
+
+        // 3. Mostrar los 7 datos requeridos con formato decimales y el símbolo del euro utilizando htmlspecialchars para evitar problemas de seguridad (inyección de código)
+        echo "<h2>Resultado</h2>";
+        echo "<p>Nombre: " . htmlspecialchars($nombre, ENT_QUOTES, "UTF-8") . "</p>";
+        echo "<p>Taller seleccionado: " . htmlspecialchars($taller, ENT_QUOTES, "UTF-8") . "</p>";
+        echo "<p>Número de sesiones: " . htmlspecialchars((string)$sesiones, ENT_QUOTES, "UTF-8") . "</p>";
+        echo "<p>Precio por sesión: " . number_format($precio, 2, ",", ".") . " €</p>";
+        echo "<p>Importe inicial: " . number_format($importe, 2, ",", ".") . " €</p>";
+        echo "<p>Descuento aplicado: " . number_format($descuento, 2, ",", ".") . " €</p>";
+        echo "<p>Importe total: " . number_format($total, 2, ",", ".") . " €</p>";
     }
-    echo "</ul>";
-        } else {
-    // Aquí van tus cálculos (porque no hay errores)
-    }
+
 
 }
